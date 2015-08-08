@@ -1,0 +1,19 @@
+.interplay-manual,
+.interplay-keyboard,
+.interplay-midi {
+  position: relative;
+}
+
+.interplay-root {
+  position: relative;
+  font-family: 'Source Code Pro', monospace;
+  background: #34363B;
+  padding: 0.25rem;
+}
+
+body, html {
+  padding: 0; margin: 0;
+}
+.interplay-root {
+  min-height: 100vh;
+}

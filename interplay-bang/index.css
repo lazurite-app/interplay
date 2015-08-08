@@ -1,0 +1,70 @@
+.interplay-bang-wrap {
+  padding: 0.25rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  position: relative;
+}
+
+.interplay-bang-button {
+  color: #34363B;
+  height: 2rem;
+  position: relative;
+  font-size: 0.7rem;
+  margin-right: 2.25rem;
+}
+.interplay-bang-button,
+.interplay-bang-toggle {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 2px;
+  border-bottom: 0.25rem solid rgba(0, 0, 0, 0.5);
+}
+.interplay-bang-yay .interplay-bang-button {
+  background: #61FF90;
+}
+.interplay-bang-nay .interplay-bang-button {
+  background: #FF6F5C;
+}
+
+.interplay-bang-button > label {
+  position: absolute;
+  top: 50%; left: 0.65rem;
+  transform: translate(0, -50%);
+}
+
+.interplay-bang-button,
+.interplay-bang-button label {
+  cursor: pointer;
+}
+
+.interplay-bang-button:active {
+  border-bottom-width: 0.125rem;
+  margin-top: 0.125rem;
+}
+
+.interplay-bang-toggle {
+  position: absolute;
+  top: 0.25rem; right: 0.25rem;
+  width: 2rem; height: 2rem;
+  background: #DEE7FF;
+}
+
+.interplay-bang-rest-yay
+.interplay-bang-toggle {
+  background: #57BEF1;
+}
+
+.interplay-bang-button-key,
+.interplay-bang-toggle-key {
+  position: absolute;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.interplay-bang-button-key {
+  top: 50%; right: 0.65rem;
+  transform: translate(0, -50%);
+}
+.interplay-bang-toggle-key {
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+}

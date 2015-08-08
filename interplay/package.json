@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "brfs": "^1.4.0",
-    "defaultcss": "^1.1.1"
+    "defaultcss": "^1.1.1",
+    "events": "^1.0.2",
+    "inherits": "^2.0.1"
   }
 }
