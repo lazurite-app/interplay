@@ -1,3 +1,4 @@
+const remove = require('remove-element')
 const inherits = require('inherits')
 const Emitter = require('events/')
 const css = require('defaultcss')
@@ -17,6 +18,7 @@ function Interplay () {
 
   this._enabled = true
   this.nodes = {}
+  this.elems = {}
   this.data = {}
 
   this.el = document.createElement('div')
@@ -35,10 +37,32 @@ Interplay.prototype.add = function (key, Base, options) {
   const el = Base(node, options)
 
   this.nodes[key] = node
+  this.elems[key] = el
   this.el.appendChild(el)
   node.emit('init')
 
   return node
+}
+
+Interplay.prototype.remove = function (key) {
+  const node = this.nodes[key]
+  const elem = this.elems[key]
+
+  node.emit('stop')
+  remove(elem)
+
+  delete this.nodes[key]
+  delete this.elems[key]
+
+  return node
+}
+
+Interplay.prototype.clear = function () {
+  const self = this
+
+  Object.keys(self.nodes).forEach(function (key) {
+    self.remove(key)
+  })
 }
 
 Object.defineProperty(Interplay.prototype, 'enabled', {

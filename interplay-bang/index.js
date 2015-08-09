@@ -83,8 +83,8 @@ function InterplayBang (node, options) {
     window.addEventListener('mouseup', buttonup, false)
   }).on('stop', function () {
     if (options.keys.toggle || options.keys.button) {
-      window.addEventListener('keydown', keydown, false)
-      window.addEventListener('keyup', keyup, false)
+      window.removeEventListener('keydown', keydown, false)
+      window.removeEventListener('keyup', keyup, false)
     }
 
     toggle.removeEventListener('mouseup', toggleup, false)
