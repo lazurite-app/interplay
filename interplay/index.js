@@ -75,7 +75,6 @@ Object.defineProperty(InterplayNode.prototype, 'value', {
     return this._value
   },
   set: function (next) {
-    if (!this._enabled) return
     const prev = this._value
     if (next === prev) return
     this._value = next
