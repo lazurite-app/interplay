@@ -15,6 +15,7 @@ function Interplay () {
     return new Interplay()
   }
 
+  this._enabled = true
   this.nodes = {}
   this.data = {}
 
@@ -30,7 +31,7 @@ Interplay.prototype.attach = function () {
 Interplay.prototype.add = function (key, Base, options) {
   options = options || {}
 
-  const node = new InterplayNode(options.label || key)
+  const node = new InterplayNode(options.label || key, this.enabled)
   const el = Base(node, options)
 
   this.nodes[key] = node
@@ -40,10 +41,26 @@ Interplay.prototype.add = function (key, Base, options) {
   return node
 }
 
+Object.defineProperty(Interplay.prototype, 'enabled', {
+  get: function () {
+    return this._enabled
+  },
+  set: function (next) {
+    const nodes = this.nodes
+
+    this._enabled = next = !!next
+
+    Object.keys(nodes).forEach(function (key) {
+      nodes[key].enabled = next
+    })
+  }
+})
+
 inherits(InterplayNode, Emitter)
-function InterplayNode (label) {
+function InterplayNode (label, enabled) {
   Emitter.call(this)
 
+  this._enabled = enabled
   this._value = null
   this.label = label
   this.input = {
@@ -54,13 +71,26 @@ function InterplayNode (label) {
 }
 
 Object.defineProperty(InterplayNode.prototype, 'value', {
-  get: function() {
+  get: function () {
     return this._value
   },
-  set: function(next) {
+  set: function (next) {
+    if (!this._enabled) return
     const prev = this._value
     if (next === prev) return
-    this.emit('change', next, prev)
     this._value = next
+    this.emit('change', next, prev)
+  }
+})
+
+Object.defineProperty(InterplayNode.prototype, 'enabled', {
+  get: function () {
+    return this._enabled
+  },
+  set: function (next) {
+    const prev = this._enabled
+    if (prev === next) return
+    this._enabled = !!next
+    this.emit(next ? 'enable' : 'disable')
   }
 })

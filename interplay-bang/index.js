@@ -24,10 +24,11 @@ function InterplayBang (node, options) {
   const toggle = el.querySelector('.interplay-bang-toggle')
   const button = el.querySelector('.interplay-bang-button')
 
-  node.input.manual = true
-  node.input.keyboard = true
   node.value = rest
 
+  //
+  // Setup DOM labels for key bindings
+  //
   const labels = slice(el.querySelectorAll('label'))
 
   labels.forEach(function (label) {
@@ -53,6 +54,22 @@ function InterplayBang (node, options) {
       .innerHTML = escape(options.keys.button)
   }
 
+  //
+  // Enable/disable button classes
+  //
+  node.on('enable', function () {
+    el.classList.remove('interplay-bang-disabled')
+  }).on('disable', function () {
+    el.classList.add('interplay-bang-disabled')
+  })
+
+  if (!node.enabled) {
+    el.classList.add('interplay-bang-disabled')
+  }
+
+  //
+  // Handling state changes and interaction
+  //
   node.on('change', function (next, prev) {
     updateClasses(next)
   }).on('init', function () {
@@ -76,15 +93,18 @@ function InterplayBang (node, options) {
   })
 
   function buttondown () {
+    if (!node.enabled) return
     el.classList.add('interplay-bang-active')
     node.value = !rest
   }
   function buttonup () {
+    if (!node.enabled) return
     el.classList.remove('interplay-bang-active')
     node.value = rest
   }
 
   function keydown (e) {
+    if (!node.enabled) return
     const key = vkey[e.keyCode]
     if (key === options.keys.button) {
       buttondown()
@@ -95,6 +115,7 @@ function InterplayBang (node, options) {
   }
 
   function keyup (e) {
+    if (!node.enabled) return
     const key = vkey[e.keyCode]
     if (key === options.keys.button) {
       buttonup()
@@ -102,6 +123,7 @@ function InterplayBang (node, options) {
   }
 
   function toggleup () {
+    if (!node.enabled) return
     node.value = rest = !rest
   }
 

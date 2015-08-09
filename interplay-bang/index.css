@@ -33,14 +33,30 @@
 }
 
 .interplay-bang-button,
+.interplay-bang-toggle,
 .interplay-bang-button label {
   cursor: pointer;
 }
 
 .interplay-bang-active .interplay-bang-button,
-.interplay-bang-rest .interplay-bang-toggle {
+.interplay-bang-rest .interplay-bang-toggle,
+.interplay-bang-disabled .interplay-bang-button,
+.interplay-bang-disabled .interplay-bang-toggle {
   border-bottom-width: 0.125rem;
   margin-top: 0.125rem;
+  cursor: default;
+  color: #34363B;
+}
+
+.interplay-bang-disabled .interplay-bang-button label {
+  cursor: default;
+  color: #34363B;
+}
+
+.interplay-bang-disabled .interplay-bang-button,
+.interplay-bang-disabled .interplay-bang-toggle {
+  background: #5B6173;
+  color: #000;
 }
 
 .interplay-bang-toggle {
