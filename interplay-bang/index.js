@@ -17,9 +17,12 @@ const html = fs.readFileSync(
 , 'utf8')
 
 function InterplayBang (node, options) {
-  const el = domify(html)
-  const rest = !!options.value
+  options = options || {}
 
+  var rest = !!options.value
+  const el = domify(html)
+  const toggle = el.querySelector('.interplay-bang-toggle')
+  const button = el.querySelector('.interplay-bang-button')
 
   node.input.manual = true
   node.input.keyboard = true
@@ -51,7 +54,6 @@ function InterplayBang (node, options) {
   }
 
   node.on('change', function (next, prev) {
-    console.log('!!!', next)
     updateClasses(next)
   }).on('init', function () {
     if (options.keys.toggle || options.keys.button) {
@@ -59,54 +61,64 @@ function InterplayBang (node, options) {
       window.addEventListener('keyup', keyup, false)
     }
 
-    el.addEventListener('mousedown', mousedown, false)
-    window.addEventListener('mouseup', mouseup, false)
+    toggle.addEventListener('mouseup', toggleup, false)
+    button.addEventListener('mousedown', buttondown, false)
+    window.addEventListener('mouseup', buttonup, false)
   }).on('stop', function () {
     if (options.keys.toggle || options.keys.button) {
       window.addEventListener('keydown', keydown, false)
       window.addEventListener('keyup', keyup, false)
     }
 
-    el.removeEventListener('mousedown', mousedown, false)
-    window.removeEventListener('mouseup', mouseup, false)
+    toggle.removeEventListener('mouseup', toggleup, false)
+    button.removeEventListener('mousedown', buttondown, false)
+    window.removeEventListener('mouseup', buttonup, false)
   })
 
-  function mousedown () {
+  function buttondown () {
+    el.classList.add('interplay-bang-active')
     node.value = !rest
   }
-  function mouseup () {
+  function buttonup () {
+    el.classList.remove('interplay-bang-active')
     node.value = rest
   }
 
   function keydown (e) {
     const key = vkey[e.keyCode]
     if (key === options.keys.button) {
-      mousedown()
+      buttondown()
+    }
+    if (key === options.keys.toggle) {
+      toggleup()
     }
   }
+
   function keyup (e) {
     const key = vkey[e.keyCode]
     if (key === options.keys.button) {
-      mouseup()
+      buttonup()
     }
+  }
+
+  function toggleup () {
+    node.value = rest = !rest
   }
 
   updateClasses(node.value)
   function updateClasses (value) {
-    if (value) {
-      if (!el.classList.contains('interplay-bang-yay')) {
-        el.classList.add('interplay-bang-yay')
-      }
-      while (el.classList.contains('interplay-bang-nay')) {
-        el.classList.remove('interplay-bang-nay')
-      }
+    if (rest) {
+      el.classList.add('interplay-bang-rest')
     } else {
-      if (!el.classList.contains('interplay-bang-nay')) {
-        el.classList.add('interplay-bang-nay')
-      }
-      while (el.classList.contains('interplay-bang-yay')) {
-        el.classList.remove('interplay-bang-yay')
-      }
+      el.classList.remove('interplay-bang-rest')
+    }
+
+    if (value) {
+      el.classList.add('interplay-bang-yay')
+      el.classList.remove('interplay-bang-nay')
+    } else {
+      el.classList.add('interplay-bang-nay')
+      el.classList.remove('interplay-bang-yay')
     }
   }
 

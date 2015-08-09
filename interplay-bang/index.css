@@ -37,7 +37,8 @@
   cursor: pointer;
 }
 
-.interplay-bang-button:active {
+.interplay-bang-active .interplay-bang-button,
+.interplay-bang-rest .interplay-bang-toggle {
   border-bottom-width: 0.125rem;
   margin-top: 0.125rem;
 }

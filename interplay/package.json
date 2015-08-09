@@ -6,6 +6,9 @@
       "brfs"
     ]
   },
+  "scripts": {
+    "start": "budo demo.js"
+  },
   "dependencies": {
     "brfs": "^1.4.0",
     "defaultcss": "^1.1.1",
