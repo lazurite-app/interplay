@@ -17,6 +17,7 @@ function Interplay () {
   }
 
   this._enabled = true
+  this.values = {}
   this.nodes = {}
   this.elems = {}
   this.data = {}
@@ -41,6 +42,17 @@ Interplay.prototype.add = function (key, Base, options) {
   this.el.appendChild(el)
   node.emit('init')
 
+  Object.defineProperty(this.values, key, {
+    configurable: true,
+    enumerable: true,
+    get: function () {
+      return node.value
+    },
+    set: function (value) {
+      node.value = value
+    }
+  })
+
   return node
 }
 
@@ -53,6 +65,7 @@ Interplay.prototype.remove = function (key) {
 
   delete this.nodes[key]
   delete this.elems[key]
+  delete this.values[key]
 
   return node
 }
