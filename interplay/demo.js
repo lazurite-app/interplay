@@ -1,12 +1,23 @@
 const IP = require('./')
 const Bang = require('interplay-bang')
+const Range = require('interplay-range')
 
 const gui = IP().attach()
 
-gui.add('test1', Bang, { value: true, label: 'Test Variable #1', keys: { toggle: 'J', button: 'K' } })
-gui.add('test2', Bang, { value: false, label: 'Test Variable #2' })
-gui.add('test3', Bang, { value: false, label: 'Test Variable #3' })
-gui.add('test4', Bang, { value: true, label: 'Test Variable #4' })
-gui.add('test5', Bang, { value: false, label: 'Test Variable #5' })
+gui.add('bang1', Bang, { label: 'Test Bang #1', keys: { toggle: 'K', button: 'J' } })
+gui.add('bang2', Bang, { label: 'Test Bang #2', keys: { toggle: 'H', button: 'G' } })
+gui.add('bang3', Bang, { label: 'Test Bang #3' })
+gui.add('bang4', Bang, { label: 'Test Bang #4' })
+gui.add('bang5', Bang, { label: 'Test Bang #5' })
 
-gui.data.test1
+gui.add('range6', Range, {
+  label: 'Test Range #1',
+  value: 0,
+  nudge: 1,
+  min: -10,
+  max: +10,
+  keys: {
+    up: 'Q',
+    down: 'A'
+  }
+})
