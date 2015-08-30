@@ -11,12 +11,16 @@ css('interplay', fs.readFileSync(
   path.join(__dirname, 'index.css')
 , 'utf8'))
 
+inherits(Interplay, Emitter)
 function Interplay () {
   if (!(this instanceof Interplay)) {
     return new Interplay()
   }
 
+  Emitter.call(this)
+
   this._enabled = true
+  this.changers = {}
   this.values = {}
   this.nodes = {}
   this.elems = {}
@@ -34,6 +38,7 @@ Interplay.prototype.attach = function () {
 Interplay.prototype.add = function (key, Base, options) {
   options = options || {}
 
+  const self = this
   const node = new InterplayNode(options.label || key, this.enabled)
   const el = Base(node, options)
 
@@ -41,6 +46,7 @@ Interplay.prototype.add = function (key, Base, options) {
   this.elems[key] = el
   this.el.appendChild(el)
   node.emit('init')
+  node.on('change', this.changers[key] = change)
 
   Object.defineProperty(this.values, key, {
     configurable: true,
@@ -53,19 +59,26 @@ Interplay.prototype.add = function (key, Base, options) {
     }
   })
 
+  function change (next, prev) {
+    self.emit('change', key, next, prev)
+  }
+
   return node
 }
 
 Interplay.prototype.remove = function (key) {
+  const changer = this.changers[key]
   const node = this.nodes[key]
   const elem = this.elems[key]
 
+  node.removeListener('change', changer)
   node.emit('stop')
   remove(elem)
 
   delete this.nodes[key]
   delete this.elems[key]
   delete this.values[key]
+  delete this.changers[key]
 
   return node
 }
