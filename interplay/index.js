@@ -22,6 +22,7 @@ function Interplay () {
   this._enabled = true
   this.changers = {}
   this.values = {}
+  this.options = {}
   this.nodes = {}
   this.elems = {}
   this.data = {}
@@ -42,6 +43,7 @@ Interplay.prototype.add = function (key, Base, options) {
   const node = new InterplayNode(options.label || key, this.enabled)
   const el = Base(node, options)
 
+  this.options[key] = options
   this.nodes[key] = node
   this.elems[key] = el
   this.el.appendChild(el)
@@ -78,6 +80,7 @@ Interplay.prototype.remove = function (key) {
   delete this.nodes[key]
   delete this.elems[key]
   delete this.values[key]
+  delete this.options[key]
   delete this.changers[key]
 
   return node
